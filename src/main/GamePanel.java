@@ -10,7 +10,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable {
     public int TILE_SIZE = 36;
     public int MAX_SCREEN_COL = 20;
     public int MAX_SCREEN_ROW = 12;
@@ -26,7 +26,6 @@ public class GamePanel extends JPanel implements Runnable{
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
-        this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
     }
