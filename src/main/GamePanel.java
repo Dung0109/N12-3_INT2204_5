@@ -22,7 +22,8 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this,keyH);
-
+    Monster monster = new Monster(this,100,500);
+    
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
@@ -54,6 +55,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public void update(){
         player.update();
+        monster.update();
+        
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -62,7 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         tileM.draw(g2);
         player.draw(g2);
-
+        monster.draw(g2);
         g2.dispose();
     }
 }
