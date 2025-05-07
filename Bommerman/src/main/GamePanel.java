@@ -1,6 +1,7 @@
 package main;
 
 import entity.Player;
+import entity.SpeedItem;
 import tile.TileManager;
 import entity.Monster;
 
@@ -10,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
+
 
 public class GamePanel extends JPanel implements Runnable {
     public int TILE_SIZE = 48;
@@ -23,8 +25,10 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     public CollisionChecker checker = new CollisionChecker(this);
     Thread gameThread;
-    Player player = new Player(this,keyH);
-    Monster monster = new Monster(this,100,200);
+    public Player player = new Player(this,keyH);
+    public UI ui = new UI(this);
+    Monster monster = new Monster(this,this.keyH);
+    SpeedItem item = new SpeedItem(this);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -58,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void Update(){
         monster.update();
         player.update();
+        item.update();
     }
     public void paintComponent(Graphics g) {
 
@@ -65,7 +70,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         tileM.draw(g2);
         player.draw(g2);
+        ui.draw(g2);
         monster.draw(g2);
+        item.draw(g2);
     }
 }
 
