@@ -12,6 +12,8 @@ public class Player extends Entity {
 
     GamePanel gp;
     KeyHandler keyH;
+    public int hasKey = 0;
+    public int speedBoostTimer = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -44,6 +46,13 @@ public class Player extends Entity {
     }
 
     public void update() {
+        if (speedBoostTimer > 0) {
+            speedBoostTimer--;
+            if (speedBoostTimer == 0) {
+                speed = 4; // hết hiệu lực, trở lại bình thường
+            }
+        }
+
         if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
 
             if (keyH.upPressed) {
