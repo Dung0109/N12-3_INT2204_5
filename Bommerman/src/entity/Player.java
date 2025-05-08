@@ -89,17 +89,14 @@ public class Player extends Entity {
                 spriteNum = (spriteNum == 1) ? 2 : 1;
                 spriteCounter = 0;
             }
-            if (keyH.enterPressed && canPlaceBomb) {
+           if (keyH.enterPressed && gp.bombs.size() == 0) {
                 int tileSize = gp.TILE_SIZE;
                 int bombX = (worldX / tileSize) * tileSize;
                 int bombY = (worldY / tileSize) * tileSize;
 
                 gp.bombs.add(new Bomb(bombX, bombY, gp));
-                canPlaceBomb = false;
             }
-            if (!keyH.enterPressed) {
-                canPlaceBomb = true;
-            }
+            
         }
     }
 
@@ -123,9 +120,6 @@ public class Player extends Entity {
 
         g2.drawImage(image, worldX, worldY, gp.TILE_SIZE, gp.TILE_SIZE, null);
         
-        for (Bomb bomb : bombs) {
-            bomb.draw(g2);
-        }
     }
 }
 
