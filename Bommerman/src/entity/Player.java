@@ -32,6 +32,9 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
         try {
+            bomb = ImageIO.read(getClass().getResourceAsStream("/Sprite/bomb1.png"));
+            bomb1 = ImageIO.read(getClass().getResourceAsStream("/Sprite/bomb2.png"));
+            bomb2 = ImageIO.read(getClass().getResourceAsStream("/Sprite/bomb3.png"));
             up1 = ImageIO.read(getClass().getResourceAsStream("/Sprite/player_up1.png"));
             up2 = ImageIO.read(getClass().getResourceAsStream("/Sprite/player_up2.png"));
             down1 = ImageIO.read(getClass().getResourceAsStream("/Sprite/player_down1.png"));
@@ -82,6 +85,17 @@ public class Player extends Entity {
                 spriteNum = (spriteNum == 1) ? 2 : 1;
                 spriteCounter = 0;
             }
+            if (keyH.enterPressed && canPlaceBomb) {
+                int tileSize = gp.TILE_SIZE;
+                int bombX = (worldX / tileSize) * tileSize;
+                int bombY = (worldY / tileSize) * tileSize;
+
+                gp.bombs.add(new Bomb(bombX, bombY, gp));
+                canPlaceBomb = false;
+            }
+            if (!keyH.enterPressed) {
+                canPlaceBomb = true;
+            }
         }
     }
 
@@ -104,6 +118,10 @@ public class Player extends Entity {
         }
 
         g2.drawImage(image, worldX, worldY, gp.TILE_SIZE, gp.TILE_SIZE, null);
+        
+        for (Bomb bomb : bombs) {
+            bomb.draw(g2);
+        }
     }
 }
 
