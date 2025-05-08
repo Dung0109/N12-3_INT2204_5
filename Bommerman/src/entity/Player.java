@@ -70,6 +70,11 @@ public class Player extends Entity {
                 direction = "left";
             } else if (keyH.rightPressed) {
                 direction = "right";
+            }else if (keyH.enterPressed) {
+                direction = "enter";
+                if (bombs.size() == 0) {
+                    bombs.add(new Bomb(worldX, worldY, gp));
+                }
             }
 
             collisionOn = false;
@@ -89,14 +94,13 @@ public class Player extends Entity {
                 spriteNum = (spriteNum == 1) ? 2 : 1;
                 spriteCounter = 0;
             }
-           if (keyH.enterPressed && gp.bombs.size() == 0) {
-                int tileSize = gp.TILE_SIZE;
-                int bombX = (worldX / tileSize) * tileSize;
-                int bombY = (worldY / tileSize) * tileSize;
-
-                gp.bombs.add(new Bomb(bombX, bombY, gp));
+        }
+        for (int i = 0; i < bombs.size(); i++) {
+            bombs.get(i).update();
+            if (bombs.get(i).exploded) {
+                bombs.remove(i);
+                i--;
             }
-            
         }
     }
 
@@ -116,10 +120,16 @@ public class Player extends Entity {
             case "right":
                 image = (spriteNum == 1) ? right1 : right2;
                 break;
+            case "enter":
+                image = (spriteNum == 1) ? down1 : down2;
+                break;
         }
 
         g2.drawImage(image, worldX, worldY, gp.TILE_SIZE, gp.TILE_SIZE, null);
-        
+
+        for (Bomb bomb : bombs) {
+            bomb.draw(g2);
+        }
     }
 }
 
