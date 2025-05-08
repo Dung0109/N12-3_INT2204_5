@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
+import java.util.ArrayList;
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -29,6 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
     Monster monster = new Monster(this,this.keyH);
     SpeedItem item = new SpeedItem(this);
+        ArrayList<Bomb> bombs = new ArrayList<>();
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -63,6 +65,13 @@ public class GamePanel extends JPanel implements Runnable {
         monster.update();
         player.update();
         item.update();
+        for (int i = 0; i < bombs.size(); i++) {
+            bombs.get(i).update();
+            if (bombs.get(i).exploded) {
+                bombs.remove(i);
+                i--;
+            }
+        }
     }
     public void paintComponent(Graphics g) {
 
@@ -73,6 +82,9 @@ public class GamePanel extends JPanel implements Runnable {
         ui.draw(g2);
         monster.draw(g2);
         item.draw(g2);
+        for (Bomb bomb : bombs) {
+            bomb.draw(g2);
+        }
     }
 }
 
