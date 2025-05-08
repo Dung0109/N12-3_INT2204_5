@@ -16,6 +16,8 @@ public class Player extends Entity {
     public int hasKey = 0;
     public int speedBoostTimer = 0;
     ArrayList<Bomb> bombs = new ArrayList<>();
+    BufferedImage bomb, bomb1, bomb2;
+
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
