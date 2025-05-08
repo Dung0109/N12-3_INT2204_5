@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player extends Entity {
 
@@ -14,6 +15,7 @@ public class Player extends Entity {
     KeyHandler keyH;
     public int hasKey = 0;
     public int speedBoostTimer = 0;
+    ArrayList<Bomb> bombs = new ArrayList<>();
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
