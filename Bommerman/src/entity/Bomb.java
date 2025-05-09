@@ -38,6 +38,12 @@ public class Bomb{
         timer++;
         if (timer >= duration) {
             exploded = true;
+            int tileSize = gp.TILE_SIZE;
+            gp.flames.add(new Flame(x, y, "center", gp));
+            gp.flames.add(new Flame(x - tileSize, y, "left", gp));
+            gp.flames.add(new Flame(x + tileSize, y, "right", gp));
+            gp.flames.add(new Flame(x, y - tileSize, "up", gp));
+            gp.flames.add(new Flame(x, y + tileSize, "down", gp));
         }
 
         spriteCounter++;
