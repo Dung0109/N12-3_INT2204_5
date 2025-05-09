@@ -4,6 +4,7 @@ import entity.Player;
 import entity.SpeedItem;
 import tile.TileManager;
 import entity.Monster;
+import entity.Flame;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,6 +12,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -35,6 +37,8 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
     Monster monster = new Monster(this,this.keyH);
     SpeedItem item = new SpeedItem(this);
+    public ArrayList<Flame> flames = new ArrayList<>();
+
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -70,6 +74,13 @@ public class GamePanel extends JPanel implements Runnable {
         monster.update();
         player.update();
         item.update();
+        for (int i = 0; i < flames.size(); i++) {
+            flames.get(i).update();
+            if (flames.get(i).exploded) {
+                flames.remove(i);
+                i--;
+            }
+        }
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -84,6 +95,9 @@ public class GamePanel extends JPanel implements Runnable {
             player.draw(g2);
             monster.draw(g2);
             item.draw(g2);
+            for (Flame flame : flames) {
+            flame.draw(g2);
+        }
             // vẽ các đối tượng khác
         } else if (gameState == WIN_STATE) {
             drawWinScreen(g2);
