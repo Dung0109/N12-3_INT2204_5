@@ -9,9 +9,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Font;
+import java.awt.FontMetrics;
 
 import javax.swing.JPanel;
-import java.util.ArrayList;
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -21,6 +22,10 @@ public class GamePanel extends JPanel implements Runnable {
     final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
     final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
     final int FPS = 60;
+    public static final int TITLE_STATE = 0;
+    public static final int PLAY_STATE = 1;
+    public static final int WIN_STATE = 2;
+    public int gameState = PLAY_STATE;
 
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
@@ -42,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
+
     @Override
     public void run() {
         double drawInterval = 1000000000 / FPS;
@@ -66,15 +72,44 @@ public class GamePanel extends JPanel implements Runnable {
         item.update();
     }
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
 
-        tileM.draw(g2);
-        player.draw(g2);
-        ui.draw(g2);
-        monster.draw(g2);
-        item.draw(g2);
-        
+
+        if (gameState == TITLE_STATE) {
+            // vẽ menu
+        } else if (gameState == PLAY_STATE) {
+            tileM.draw(g2);
+            player.draw(g2);
+            monster.draw(g2);
+            item.draw(g2);
+            // vẽ các đối tượng khác
+        } else if (gameState == WIN_STATE) {
+            drawWinScreen(g2);
+        }
+    }
+
+    public void winGame() {
+        gameState = WIN_STATE;
+    }
+
+    public void drawWinScreen(Graphics2D g2) {
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.BOLD, 48));
+        String text = "You Win!";
+        int x = getXCentered(text, g2);
+        int y = SCREEN_HEIGHT / 2;
+        g2.drawString(text, x, y);
+    }
+
+    // Hàm căn giữa dòng chữ
+    private int getXCentered(String text, Graphics2D g2) {
+        FontMetrics fm = g2.getFontMetrics();
+        return (SCREEN_WIDTH - fm.stringWidth(text)) / 2;
     }
 }
 
