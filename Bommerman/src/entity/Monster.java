@@ -12,6 +12,7 @@ public class Monster extends Entity  {
 
     GamePanel gp;
     public int directionX =1, directionY=0;
+    public boolean alive = true;
 
     public Monster(GamePanel gp,int x, int y) {
         this.worldX = x;
