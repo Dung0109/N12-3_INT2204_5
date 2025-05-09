@@ -28,41 +28,68 @@ public class CollisionChecker {
                 if (entityTopRow >= 0) {
                     tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                     tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
+
                     if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                         entity.collisionOn = true;
                     }
+
+                    if (isPlayerOnPortal(entity, tileNum1, tileNum2)) return;
                 }
                 break;
+
             case "down":
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
                 if (entityBottomRow < gp.MAX_SCREEN_ROW) {
                     tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
                     tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
+
                     if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                         entity.collisionOn = true;
                     }
+
+                    if (isPlayerOnPortal(entity, tileNum1, tileNum2)) return;
                 }
                 break;
+
             case "left":
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
                 if (entityLeftCol >= 0) {
                     tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                     tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
+
                     if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                         entity.collisionOn = true;
                     }
+
+                    if (isPlayerOnPortal(entity, tileNum1, tileNum2)) return;
                 }
                 break;
+
             case "right":
                 entityRightCol = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
                 if (entityRightCol < gp.MAX_SCREEN_COL) {
                     tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                     tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
+
                     if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                         entity.collisionOn = true;
                     }
+
+                    if (isPlayerOnPortal(entity, tileNum1, tileNum2)) return;
                 }
                 break;
         }
     }
+
+
+    private boolean isPlayerOnPortal(Entity entity, int tileNum1, int tileNum2) {
+        if (gp.tileM.tile[tileNum1].isPortal || gp.tileM.tile[tileNum2].isPortal) {
+            if (entity == gp.player) {
+                gp.winGame(); 
+                return true;
+            }
+        }
+        return false;
+    }
 }
+
