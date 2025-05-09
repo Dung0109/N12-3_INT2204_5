@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker checker = new CollisionChecker(this);
     Thread gameThread;
     public Player player = new Player(this,keyH);
-    Monster monster = new Monster(this,this.keyH);
+    public Monster monster = new Monster(this,50,100);
     SpeedItem item = new SpeedItem(this);
     public ArrayList<Flame> flames = new ArrayList<>();
 
