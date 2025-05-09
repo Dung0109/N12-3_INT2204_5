@@ -69,7 +69,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void Update(){
+        if(monster.alive){
         monster.update();
+        }
         if (player.alive) {
             player.update();
         }
@@ -95,8 +97,9 @@ public class GamePanel extends JPanel implements Runnable {
                 tileM.draw(g2);
 
                 player.draw(g2);
-
+                if(monster.alive){
                 monster.draw(g2);
+                }
                 item.draw(g2);
                 for (Flame flame : flames) {
                     flame.draw(g2);
