@@ -47,6 +47,10 @@ public class Flame {
         if (area.intersects(playerRect)) {
             gp.player.alive = false;
         }
+        Rectangle monsterRect = new Rectangle(gp.monster.worldX, gp.monster.worldY, gp.TILE_SIZE, gp.TILE_SIZE);
+        if (area.intersects(monsterRect)) {
+            gp.monster.alive = false;
+        }
 
     }
 
