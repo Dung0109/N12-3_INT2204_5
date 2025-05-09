@@ -33,6 +33,10 @@ public class TileManager{
 
             tile[0] = new Tile();
             tile[0].image = ImageIO.read(getClass().getResourceAsStream("/Sprite/glass.png"));
+
+            tile[3] = new Tile();
+            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/Sprite/portal.png"));
+            tile[3].isPortal = true;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
