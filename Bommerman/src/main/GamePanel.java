@@ -34,11 +34,9 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker checker = new CollisionChecker(this);
     Thread gameThread;
     public Player player = new Player(this,keyH);
-    public UI ui = new UI(this);
     Monster monster = new Monster(this,this.keyH);
     SpeedItem item = new SpeedItem(this);
     public ArrayList<Flame> flames = new ArrayList<>();
-
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -72,7 +70,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public void Update(){
         monster.update();
-        player.update();
+        if (player.alive) {
+            player.update();
+        }
         item.update();
         for (int i = 0; i < flames.size(); i++) {
             flames.get(i).update();
@@ -91,13 +91,17 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == TITLE_STATE) {
             // vẽ menu
         } else if (gameState == PLAY_STATE) {
-            tileM.draw(g2);
-            player.draw(g2);
-            monster.draw(g2);
-            item.draw(g2);
-            for (Flame flame : flames) {
-            flame.draw(g2);
-        }
+            if (player.alive) {
+                tileM.draw(g2);
+
+                player.draw(g2);
+
+                monster.draw(g2);
+                item.draw(g2);
+                for (Flame flame : flames) {
+                    flame.draw(g2);
+                }
+            }else drawLostScreen(g2);
             // vẽ các đối tượng khác
         } else if (gameState == WIN_STATE) {
             drawWinScreen(g2);
@@ -125,5 +129,17 @@ public class GamePanel extends JPanel implements Runnable {
         FontMetrics fm = g2.getFontMetrics();
         return (SCREEN_WIDTH - fm.stringWidth(text)) / 2;
     }
+    public void drawLostScreen(Graphics2D g2) {
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.BOLD, 48));
+        String text = "You Lost!";
+        int x = getXCentered(text, g2);
+        int y = SCREEN_HEIGHT / 2;
+        g2.drawString(text, x, y);
+    }
 }
+
 
