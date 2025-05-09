@@ -42,6 +42,11 @@ public class Flame {
         if (timer >= duration) {
             exploded = true;
         }
+        
+         Rectangle playerRect = new Rectangle(gp.player.worldX, gp.player.worldY, gp.TILE_SIZE, gp.TILE_SIZE);
+        if (area.intersects(playerRect)) {
+            gp.player.alive = false;
+        }
 
     }
 
