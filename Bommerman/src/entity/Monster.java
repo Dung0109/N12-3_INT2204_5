@@ -7,17 +7,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-
-public class Monster extends Entity  {
+public class Monster extends Entity {
 
     GamePanel gp;
-    public int directionX =1, directionY=0;
     public boolean alive = true;
 
-    public Monster(GamePanel gp,int x, int y) {
+    public Monster(GamePanel gp, int x, int y) {
+        this.gp = gp;
         this.worldX = x;
         this.worldY = y;
-        this.gp = gp;
         setDefaultValues();
         getMonsterImage();
     }
@@ -25,6 +23,7 @@ public class Monster extends Entity  {
     public void setDefaultValues() {
         speed = 2;
         direction = "right";
+        solidArea = new Rectangle(8, 8, 32, 32);
     }
 
     public void getMonsterImage() {
@@ -39,39 +38,52 @@ public class Monster extends Entity  {
     }
 
     public void update() {
+        collisionOn = false;
 
-        directionX += speed * directionX;
-        directionY += speed * directionY;
+        // Kiểm tra va chạm tile
+        gp.checker.checkTile(this);
 
-        // Đảo chiều khi va vào biên
-        if (directionX <= 100 || directionX >= 500 - gp.TILE_SIZE) {
-            directionX *= -1;
+        if (collisionOn) {
+            if (direction.equals("right")) {
+                direction = "left";
+            } else {
+                direction = "right";
+            }
+        } else {
+            if (direction.equals("right")) {
+                worldX += speed;
+            } else if (direction.equals("left")) {
+                worldX -= speed;
+            }
         }
-        if (directionY <= 100 || directionY >= 500 - gp.TILE_SIZE) {
-            directionY *= -1;
-        }
 
-        // Cập nhật animation
+        // Animation
         spriteCounter++;
         if (spriteCounter > 10) {
             spriteNum = (spriteNum == 1) ? 2 : 1;
             spriteCounter = 0;
         }
 
+        // Kiểm tra va chạm Player
+        Rectangle monsterRect = new Rectangle(worldX + solidArea.x, worldY + solidArea.y, solidArea.width, solidArea.height);
+        Rectangle playerRect = new Rectangle(gp.player.worldX + gp.player.solidArea.x, gp.player.worldY + gp.player.solidArea.y, gp.player.solidArea.width, gp.player.solidArea.height);
 
+        if (monsterRect.intersects(playerRect)) {
+            // Gọi màn hình thua
+            gp.player.alive = false;
+            // Hoặc gọi thẳng: gp.gameState = GamePanel.LOST_STATE;
+        }
     }
 
     public void draw(Graphics2D g2) {
-
-
         BufferedImage image = null;
-        if (directionX > 0) {
+
+        if (direction.equals("right")) {
             image = (spriteNum == 1) ? right1 : right2;
-        } else if (directionX < 0) {
+        } else {
             image = (spriteNum == 1) ? left1 : left2;
         }
 
         g2.drawImage(image, worldX, worldY, gp.TILE_SIZE, gp.TILE_SIZE, null);
     }
-
 }
