@@ -51,7 +51,14 @@ public class Flame {
         if (area.intersects(monsterRect)) {
             gp.monster.alive = false;
         }
-
+        int col = x / gp.TILE_SIZE;
+        int row = y / gp.TILE_SIZE;
+        if (gp.tileM.mapTileNum[col][row] == 2) {
+            if (col == gp.item.worldX/ gp.TILE_SIZE && row == gp.item.worldY/ gp.TILE_SIZE) {
+                gp.tileM.mapTileNum[col][row] = 4;
+            }
+            else  gp.tileM.mapTileNum[col][row] = 0;
+        }
     }
 
     public void draw(Graphics2D g2) {
