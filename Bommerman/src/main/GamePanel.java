@@ -1,41 +1,37 @@
 package main;
 
+import entity.Flame;
 import entity.Player;
 import entity.SpeedItem;
 import tile.TileManager;
 import entity.Monster;
-import entity.Flame;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Font;
-import java.awt.FontMetrics;
+import java.awt.*;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 
 public class GamePanel extends JPanel implements Runnable {
-    public int TILE_SIZE = 48;
+    public int TILE_SIZE = 50;
     public int MAX_SCREEN_COL = 20;
     public int MAX_SCREEN_ROW = 12;
-    final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
-    final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
+    public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
+    public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
     final int FPS = 60;
     public static final int TITLE_STATE = 0;
     public static final int PLAY_STATE = 1;
     public static final int WIN_STATE = 2;
     public int gameState = PLAY_STATE;
 
-    TileManager tileM = new TileManager(this);
+    public TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     public CollisionChecker checker = new CollisionChecker(this);
     Thread gameThread;
+
     public Player player = new Player(this,keyH);
-    public Monster monster = new Monster(this,50,100);
-    SpeedItem item = new SpeedItem(this);
+    public Monster monster = new Monster(this,550,450);
+    public SpeedItem item = new SpeedItem(this);
     public ArrayList<Flame> flames = new ArrayList<>();
 
     public GamePanel() {
@@ -69,20 +65,27 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
     public void Update(){
-        if(monster.alive){
-        monster.update();
+
+        if (monster.alive) {
+            monster.update();
         }
+
         if (player.alive) {
             player.update();
         }
+
         item.update();
         for (int i = 0; i < flames.size(); i++) {
-            flames.get(i).update();
-            if (flames.get(i).exploded) {
+            Flame f = flames.get(i);
+            f.update();
+
+            // Remove flame nếu hết thời gian
+            if (f.exploded) {
                 flames.remove(i);
                 i--;
             }
         }
+
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -97,10 +100,12 @@ public class GamePanel extends JPanel implements Runnable {
                 tileM.draw(g2);
 
                 player.draw(g2);
-                if(monster.alive){
-                monster.draw(g2);
+                if(monster.alive) {
+                    monster.draw(g2);
                 }
-                item.draw(g2);
+                if(item.appear) {
+                    item.draw(g2);
+                }
                 for (Flame flame : flames) {
                     flame.draw(g2);
                 }
@@ -110,7 +115,6 @@ public class GamePanel extends JPanel implements Runnable {
             drawWinScreen(g2);
         }
     }
-
     public void winGame() {
         gameState = WIN_STATE;
     }
@@ -143,6 +147,6 @@ public class GamePanel extends JPanel implements Runnable {
         int y = SCREEN_HEIGHT / 2;
         g2.drawString(text, x, y);
     }
-}
 
+}
 
