@@ -73,6 +73,8 @@ public class Player extends Entity {
             }else if (keyH.enterPressed) {
                 direction = "enter";
                 if (bombs.size() == 0) {
+                    int bomX = (worldX/ gp.TILE_SIZE) * gp.TILE_SIZE;
+                    int bomy = (worldY/ gp.TILE_SIZE) * gp.TILE_SIZE;
                     bombs.add(new Bomb(worldX, worldY, gp));
                 }
             }
