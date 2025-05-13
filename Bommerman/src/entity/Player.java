@@ -60,7 +60,7 @@ public class Player extends Entity {
             }
         }
 
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed||keyH.enterPressed) {
 
             if (keyH.upPressed) {
                 direction = "up";
