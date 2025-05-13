@@ -10,12 +10,15 @@ public class SpeedItem extends Entity {
     GamePanel gp;
     public boolean collected = false;
     public BufferedImage image;
+    public boolean appear = false;
+    public int world[][];
 
     public SpeedItem(GamePanel gp) {
         this.gp = gp;
-        worldX = 50;
-        worldY = 50;
+        worldX = 100;
+        worldY = 150;
         solidArea = new Rectangle(0, 0, 35, 40);
+        world = new int[gp.MAX_SCREEN_COL][gp.MAX_SCREEN_ROW];
         getImage();
     }
 
@@ -37,17 +40,22 @@ public class SpeedItem extends Entity {
                 gp.player.solidArea.height
         );
         Rectangle itemRect = new Rectangle(worldX, worldY, solidArea.width, solidArea.height);
-
         if (playerRect.intersects(itemRect)) {
             collected = true;
-            gp.player.speed = 8; // tăng tốc
-            gp.player.speedBoostTimer = 300; // giữ 5 giây (60 fps x 5)
+            gp.player.speed = 8; 
+            gp.player.speedBoostTimer = 300; 
+            gp.tileM.mapTileNum[gp.item.worldX/ gp.TILE_SIZE][gp.item.worldY/ gp.TILE_SIZE] = 0;
         }
+
+            if (gp.tileM.mapTileNum[gp.item.worldX/ gp.TILE_SIZE][gp.item.worldY/ gp.TILE_SIZE] == 4) {
+                gp.item.appear = true;
+        }
+
     }
 
     public void draw(Graphics2D g2) {
-        if (!collected) {
-            g2.drawImage(image, worldX, worldY, gp.TILE_SIZE, gp.TILE_SIZE, null);
-        }
+            if (!collected) {
+                g2.drawImage(image, worldX, worldY, gp.TILE_SIZE, gp.TILE_SIZE, null);
+            }
     }
 }
