@@ -69,9 +69,7 @@ public class Monster extends Entity {
         Rectangle playerRect = new Rectangle(gp.player.worldX + gp.player.solidArea.x, gp.player.worldY + gp.player.solidArea.y, gp.player.solidArea.width, gp.player.solidArea.height);
 
         if (monsterRect.intersects(playerRect)) {
-            // Gọi màn hình thua
             gp.player.alive = false;
-            // Hoặc gọi thẳng: gp.gameState = GamePanel.LOST_STATE;
         }
     }
 
