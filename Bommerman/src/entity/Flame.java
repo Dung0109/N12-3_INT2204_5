@@ -56,7 +56,7 @@ public class Flame {
         if (gp.tileM.mapTileNum[col][row] == 2) {
             if (col == gp.item.worldX/ gp.TILE_SIZE && row == gp.item.worldY/ gp.TILE_SIZE) {
                 gp.tileM.mapTileNum[col][row] = 4;
-            }
+            }  else if(col == 18 && row == 8) gp.tileM.mapTileNum[col][row] = 3;
             else  gp.tileM.mapTileNum[col][row] = 0;
         }
     }
